@@ -30,27 +30,40 @@ void loop() {
   GearOpened = digitalRead(5);
   GearClosed = digitalRead(7);
   MotorMove = digitalRead(9);
+  //MotorMove = LOW;
 
   Serial.print("GearOpened: ");
   Serial.println(GearOpened);
   Serial.print("GearClosed: ");
   Serial.println(GearClosed);
 
-  if (GearOpened == _YES && MotorMove == _MotorMoveUp) { // Шасси выпущено, мотор работает на подъем шасси
-    digitalWrite(_GearOpen, _NO);
-    digitalWrite(_GearClose, _YES);
-  }
-  else if (GearOpened == _YES && MotorMove == _MotorMoveDown) { // Шасси выпущено, мотор работает на выпуск шасси
-    digitalWrite(_GearOpen, _NO);
-    digitalWrite(_GearClose, _NO);
-  }
-  else if (GearOpened == _NO && MotorMove == _MotorMoveUp) { // Шасси убрано, мотор работает на подъем шасси
-    digitalWrite(_GearOpen, _NO);
-    digitalWrite(_GearClose, _NO);
-  }
-  else if (GearOpened == _NO && MotorMove == _MotorMoveDown) { // Шасси убрано, мотор работает на выпуск шасси
+  if (GearClosed == _NO && MotorMove == _MotorMoveUp) { // Шасси выпущено, мотор работает на подъем шасси
+    //digitalWrite(_GearOpen, _NO);
+    //digitalWrite(_GearClose, _YES);
+
     digitalWrite(_GearOpen, _YES);
     digitalWrite(_GearClose, _NO);
+  }
+  else if (GearOpened == _YES && MotorMove == _MotorMoveDown) { // Шасси выпущено, мотор работает на выпуск шасси
+    //digitalWrite(_GearOpen, _NO);
+    //digitalWrite(_GearClose, _NO);
+
+    digitalWrite(_GearOpen, _YES);
+    digitalWrite(_GearClose, _YES);
+  }
+  else if (GearClosed == _YES && MotorMove == _MotorMoveUp) { // Шасси убрано, мотор работает на подъем шасси
+    //digitalWrite(_GearOpen, _NO);
+    //digitalWrite(_GearClose, _NO);
+
+    digitalWrite(_GearOpen, _YES);
+    digitalWrite(_GearClose, _YES);
+  }
+  else if (GearOpened == _NO && MotorMove == _MotorMoveDown) { // Шасси убрано, мотор работает на выпуск шасси
+    //digitalWrite(_GearOpen, _YES);
+    //digitalWrite(_GearClose, _NO);
+
+    digitalWrite(_GearOpen, _NO);
+    digitalWrite(_GearClose, _YES);
   }
 
 /*  if (GearOpened == HIGH) {
