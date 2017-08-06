@@ -4,8 +4,8 @@ const int _MotorMoveDown = LOW;
 const int _YES = HIGH;
 const int _NO = LOW;
 
-const int _GearOpen = 4;
-const int _GearClose = 6;
+const int _GearOpen = 3;
+const int _GearClose = 9;
 
 int GearOpened;
 int GearClosed;
@@ -14,28 +14,39 @@ int MotorMove;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  pinMode(4, OUTPUT); // Сигнал - поднять шасси
-  pinMode(6, OUTPUT); // Сигнал - выпустить шасси
+  pinMode(3, OUTPUT); // Сигнал - поднять шасси
+  pinMode(9, OUTPUT); // Сигнал - выпустить шасси
   
-  pinMode(5, INPUT); // Сигнал о выпущенном шасси. Подтянуть резистором 10кОм к GRND.
+  pinMode(2, INPUT); // Сигнал о выпущенном шасси. Подтянуть резистором 10кОм к GRND.
   pinMode(7, INPUT); // Сигнал о поднятом шасси. Подтянуть резистором 10кОм к GRND. 
 
   pinMode(10, INPUT); // Входной шим-сигнал от передатчика. LOW - выпустить шасси. HIGH - поднять шасси.
-  
+
+  //analogWrite(3, 0);
+  //analogWrite(9, 100);
 
 }
 
 void loop() {
  
-  GearOpened = digitalRead(5);
+  GearOpened = digitalRead(2);
   GearClosed = digitalRead(7);
-  MotorMove = digitalRead(9);
+  MotorMove = digitalRead(10);
   //MotorMove = LOW;
 
   Serial.print("GearOpened: ");
   Serial.println(GearOpened);
   Serial.print("GearClosed: ");
   Serial.println(GearClosed);
+
+
+
+  Serial.print("3: ");
+  Serial.println(analogRead(3));
+  Serial.print("9: ");
+  Serial.println(analogRead(9));
+
+
 
   if (GearClosed == _NO && MotorMove == _MotorMoveUp) { // Шасси выпущено, мотор работает на подъем шасси
     //digitalWrite(_GearOpen, _NO);
