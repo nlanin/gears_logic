@@ -10,6 +10,8 @@ const int _GearClose = 9;
 int GearOpened;
 int GearClosed;
 int MotorMove;
+
+double SignalFromFlySky;
   
 void setup() {
   // put your setup code here, to run once:
@@ -25,27 +27,58 @@ void setup() {
   //analogWrite(3, 0);
   //analogWrite(9, 100);
 
+
 }
 
 void loop() {
  
-  GearOpened = digitalRead(2);
-  GearClosed = digitalRead(7);
-  MotorMove = digitalRead(10);
-  //MotorMove = LOW;
+  if (GearOpened == _NO) 
+  {
+    GearOpened = digitalRead(2);
+  }
+  
+  if (GearClosed == _NO) 
+  {
+    GearClosed = digitalRead(7);
+  }
 
+  if (GearClosed == _YES && GearOpened == _YES)
+  {
+    GearClosed = _NO;
+    GearOpened = _NO;
+  }
+  
+  MotorMove = digitalRead(10);
+  SignalFromFlySky = pulseIn(10, HIGH);
+  if (SignalFromFlySky < 1500)
+  {
+    MotorMove = _MotorMoveUp;
+    //GearClosed = _NO;
+  }
+  else
+  {
+    MotorMove = _MotorMoveDown;
+    //GearOpened = _NO;
+  }
+  
   Serial.print("GearOpened: ");
   Serial.println(GearOpened);
   Serial.print("GearClosed: ");
   Serial.println(GearClosed);
+  Serial.print("MotorMove: ");
+  Serial.println(MotorMove);
 
 
-
+/*
   Serial.print("3: ");
   Serial.println(analogRead(3));
   Serial.print("9: ");
   Serial.println(analogRead(9));
-
+  Serial.print("10: ");
+  Serial.println(analogRead(10));
+  Serial.print("10d: ");
+  Serial.println(digitalRead(10));
+*/
 
 
   if (GearClosed == _NO && MotorMove == _MotorMoveUp) { // Шасси выпущено, мотор работает на подъем шасси
@@ -54,6 +87,8 @@ void loop() {
 
     digitalWrite(_GearOpen, _YES);
     digitalWrite(_GearClose, _NO);
+    
+    GearOpened = _NO;
   }
   else if (GearOpened == _YES && MotorMove == _MotorMoveDown) { // Шасси выпущено, мотор работает на выпуск шасси
     //digitalWrite(_GearOpen, _NO);
@@ -75,6 +110,8 @@ void loop() {
 
     digitalWrite(_GearOpen, _NO);
     digitalWrite(_GearClose, _YES);
+    
+    GearClosed = _NO;
   }
 
 /*  if (GearOpened == HIGH) {
@@ -90,7 +127,7 @@ void loop() {
   }
 */
 
-delay(100);
+//delay(100);
 }
 
 
